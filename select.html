@@ -32,7 +32,7 @@ var num = alldataarr.length-1;
 var timer;  
 var status=0;
 function change(){     
-    document.getElementById("result").innerHTML = alldataarr[GetRnd(0,num)];
+    document.getElementById("result").innerHTML = alldataarr[GetRnd(0,num-1)];
 }  
 function start(){
 	status = 1;
@@ -48,8 +48,6 @@ function ok(){
 	status = 0;
 	document.getElementById("stop").className = "weui-btn weui-btn_disable weui-btn_default";
 	document.getElementById("start").className = "weui-btn weui-btn_primary";
-	
-	document.getElementById("result").innerHTML = alldataarr[GetRnd(0,(num>=5?num-5:num-1))]; 
 	
 	var result=document.getElementById("result").innerHTML;
 	
