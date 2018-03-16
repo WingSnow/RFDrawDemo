@@ -46,7 +46,7 @@ function ok(){
 	
 	var result=document.getElementById("result").innerHTML
 	
-	document.getElementById("result").innerHTML = alldataarr[GetRnd(0,num-5)]; 
+	document.getElementById("result").innerHTML = alldataarr[GetRnd(0,(num>5?num-5:num-1))]; 
 	
     clearInterval(timer);     
     //以下代码表示获得奖的，不能再获奖了。  重置刷新页面即可。  
