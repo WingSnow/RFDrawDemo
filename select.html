@@ -44,9 +44,9 @@ function ok(){
 	document.getElementById("stop").className = "weui-btn weui-btn_disable weui-btn_default";
 	document.getElementById("start").className = "weui-btn weui-btn_primary";
 	
-	var result=document.getElementById("result").innerHTML
-	
 	document.getElementById("result").innerHTML = alldataarr[GetRnd(0,(num>=5?num-5:num-1))]; 
+	
+	var result=document.getElementById("result").innerHTML;
 	
     clearInterval(timer);     
     //以下代码表示获得奖的，不能再获奖了。  重置刷新页面即可。  
