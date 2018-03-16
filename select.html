@@ -30,17 +30,22 @@ var alldata = "蔡珂丹,蔡丽芸,曾婷婷,曾稳,岑剑雯,陈虹,陈嘉雯,�
 var alldataarr = alldata.split(",");
 var num = alldataarr.length-1;  
 var timer;  
-var indice=0;
+var status=0;
 function change(){     
     document.getElementById("result").innerHTML = alldataarr[GetRnd(0,num)];
 }  
-function start(){    
+function start(){
+	status = 1;
 	document.getElementById("start").className = "weui-btn weui-btn_disable weui-btn_default";
 	document.getElementById("stop").className = "weui-btn weui-btn_warn";
     clearInterval(timer);     
     timer = setInterval('change()',46);
 }  
-function ok(){     
+function ok(){
+	if(status != 1){
+		return;
+	}
+	status = 0;
 	document.getElementById("stop").className = "weui-btn weui-btn_disable weui-btn_default";
 	document.getElementById("start").className = "weui-btn weui-btn_primary";
 	
