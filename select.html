@@ -1,4 +1,4 @@
-﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">  
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">  
 <html>  
 <head>
 	<title>为所欲为</title>
@@ -10,6 +10,7 @@
 
 	<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
 	<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css">
+	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 
 	<style>
 		.demos-content-padded{
@@ -22,22 +23,62 @@
 			font-weight: 400;
 			margin: 50px 15%;
 		}
+		.result_hope_box{
+			text-align: center;
+			font-size: 26px;
+			font-weight: 400;
+			border-radius: 15px 15px;
+			margin: 100px 10%;
+			padding: 15px 0px;
+			width:80%;
+			background-color:#1aad19;
+			color:white;
+		}
+		.chest{
+			text-align:center;
+		}
+		.hide{
+			display:none;
+		}
+		@-webkit-keyframes Stress {
+			0% {
+				opacity:1;
+			 }
+			50% {
+				opacity: 0.5;    
+			}
+		}
+		.anim_stress_image {   
+			-webkit-animation-name: Stress;
+			-webkit-animation-timing-function: ease-in-out;
+			-webkit-animation-iteration-count: infinite;
+			-webkit-animation-duration: 1s;
+			-webkit-animation-direction: normal;
+		}
 	</style>
-</head> 
 <script type="text/javascript">  
 //抽奖数据，以英文逗号分隔  
-var alldata = "蔡珂丹,蔡丽芸,曾婷婷,曾稳,岑剑雯,陈虹,陈嘉雯,陈俊福,陈子豪,杜姝姝,杜素娟,高喆,郭诗琪,黄丽阳,胡骏,霍文裕,胡泉,梁润记,梁智华,李浩锐,李家辉,李可葳,刘可迪,刘琴,罗梦竹,罗志雄,毛国导,孟祥存,潘斯妍,容安安,施维,谭锦祺,王琨,王律可,王申,王涛,万国彬,王鑫,王彦,吴毅,肖俊,肖月瑶,谢晓静,叶蕾,张浩松,张锦明,张军,詹力榛,郑嘉颖,周力钊,周艳辉,何文震,陈鹏,贾宇宁,陈冬文,卓加顺,王米梓,陈国鸿,严文敬,杨晓雯,潘耀";    
+var alldata = "蔡珂丹,蔡丽芸,曾婷婷,曾稳,岑剑雯,陈虹,陈嘉雯,陈俊福,陈子豪,杜姝姝,杜素娟,高喆,郭诗琪,黄丽阳,胡骏,霍文裕,胡泉,梁润记,梁智华,李浩锐,李家辉,李可葳,刘可迪,刘琴,罗梦竹,罗志雄,毛国导,孟祥存,潘斯妍,容安安,施维,谭锦祺,王琨,王律可,王申,王涛,万国彬,王鑫,王彦,吴毅,肖俊,肖月瑶,谢晓静,叶蕾,张浩松,张锦明,张军,詹力榛,郑嘉颖,周力钊,周艳辉,何文震,陈鹏,贾宇宁,陈冬文,卓加顺,王米梓,陈国鸿,严文敬,杨晓雯,潘耀";
+//愿望数据，用英文分号分隔
+var allHope = 
+"给我发一个红包;买一个爱心早餐;说出我的五个优点;请我喝下午茶;帮我借一个会议室";
 var alldataarr = alldata.split(",");
-var num = alldataarr.length-1;  
+var allHopearr = allHope.split(";");
+var num = alldataarr.length;  
 var timer;  
-var status=0;
+var status=0;//0:未抽人; 1:抽人过程; 2:已抽人未开箱; 3:开箱过程; 4:终态；
+var count = 0;//开箱动画计数器
 function change(){     
     document.getElementById("result").innerHTML = alldataarr[GetRnd(0,num-1)];
 }  
 function start(){
+	if(status != 0){
+		return;
+	}
 	status = 1;
-	document.getElementById("start").className = "weui-btn weui-btn_disable weui-btn_default";
-	document.getElementById("stop").className = "weui-btn weui-btn_warn";
+	$("#start").attr("class","weui-btn weui-btn_disable weui-btn_default");
+	$("#stop").attr("class","weui-btn weui-btn_warn");
+	
     clearInterval(timer);     
     timer = setInterval('change()',46);
 }  
@@ -45,15 +86,13 @@ function ok(){
 	if(status != 1){
 		return;
 	}
-	status = 0;
-	document.getElementById("stop").className = "weui-btn weui-btn_disable weui-btn_default";
-	document.getElementById("start").className = "weui-btn weui-btn_primary";
-	
+	$("#stop").attr("class","weui-btn weui-btn_disable weui-btn_default");
+	$("#start").attr("class","weui-btn weui-btn_disable weui-btn_default");
+	$("#chest").attr("src","./pic/1.png");
+	$("#chest").addClass("anim_stress_image");
 	var result=document.getElementById("result").innerHTML;
-	
-    clearInterval(timer);     
-    //以下代码表示获得奖的，不能再获奖了。  重置刷新页面即可。  
-	
+    clearInterval(timer);
+    //以下代码表示获得奖的，不能再获奖了。重置刷新页面即可。  
     alldata = alldata.replace(document.getElementById("result").innerHTML,"").replace(",,",",");  
     // 去掉前置，最末尾的,  
     if (alldata.substr(0,1)==",")  
@@ -65,17 +104,83 @@ function ok(){
       alldata = alldata.substring(0,alldata.length-1);  
     }  
     alldataarr = alldata.split(",");    
-    num = alldataarr.length-1;    
-}     
-function GetRnd(min,max){     
-    return parseInt(Math.random()*(max-min+1));     
+    num = alldataarr.length;
+	status = 2;	
+}
+
+function openChest(){
+	if(status != 2){
+		return;
+	}
+	status = 3;
+	count = 0;
+	$("#chest").removeClass("anim_stress_image");
+	timer = setInterval("OpenChestAnimation()",500);
+}
+
+function OpenChestAnimation(){
+	if (count==0) {
+        $("#chest").attr("src","./pic/2.png");
+    }
+    if (count==1) {
+        $("#chest").attr("src","./pic/3.png");
+    }
+    if (count==2) {
+        $("#chest").attr("src","./pic/4.png");
+    }
+	if(count > 2){
+		clearInterval(timer);
+		showHope();
+	}
+	count=count+1;
+}
+
+function initial(){
+	if(status != 4) return;
+	status = 0;
+	$("#start").attr("class","weui-btn weui-btn_primary");
+	$("#chest").attr("src","./pic/5.png");
+	$("#result_hope_box").addClass("hide");
+	document.getElementById("result").innerHTML = "点击开始";
+}
+
+function showHope(){
+	if(allHopearr.length <= 1){
+		document.getElementById("result_hope_box").innerHTML = "已经没有愿望了";
+	}
+	else{
+		document.getElementById("result_hope_box").innerHTML = allHopearr[GetRnd(0,allHopearr.length-1)];
+		allHope= allHope.replace(document.getElementById("result_hope_box").innerHTML,"").replace(";;",";");  
+		if (allHope.substr(0,1)==";")  
+		{  
+		  allHope = allHope.substr(1,allHope.length);  
+		}  
+		if (allHope.substr(allHope.length-1,1)==";")
+		{  
+		  allHope = allHope.substring(0,allHope.length-1);  
+		}  
+		allHopearr = allHope.split(";");
+	}
+	status = 4;
+	$("#result_hope_box").removeClass("hide");
+}
+
+function GetRnd(min,max){
+	var out = Math.random()*(max-min);
+    return parseInt(out);     
 }  
 </script>  
+</head>
 <body> 
 	<div class = "demos-content-padded">
 		<div class="result_box" id="result">点击开始</div> 
-		<a href="javascript:;" class="weui-btn weui-btn_primary" onclick="start()" id="start">开始</a>
-		<a href="javascript:;" class="weui-btn weui-btn_disable weui-btn_default" onclick="ok()" id="stop">停止</a>
+		<a class="weui-btn weui-btn_primary" onclick="start()" id="start">开始</a>
+		<a class="weui-btn weui-btn_disable weui-btn_default" onclick="ok()" id="stop">停止</a>
 	</div>
+	<div class = "chest">
+		<div class="result_hope_box hide" id="result_hope_box" style="position:absolute" onclick="initial()">买一个爱心早餐</div>
+		<a onclick="openChest()"><img id = "chest" src="./pic/5.png"/></a>
+	</div>
+	
 </body>     
 </html>  
