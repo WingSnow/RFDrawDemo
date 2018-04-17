@@ -62,7 +62,7 @@ var alldataarr,allHopearr;
 $(document).ready(function(){
 	htmlobj = $.ajax({url:"./data/member.txt",async:false});
 	alldata = htmlobj.responseText;
-	var alldataarr = alldata.split(",");
+	alldataarr = alldata.split(",");
 	console.log(alldata);
 });
 //抽奖数据，以英文逗号分隔  
