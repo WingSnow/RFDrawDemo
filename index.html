@@ -57,13 +57,20 @@
 		}
 	</style>
 <script type="text/javascript">  
+var alldata,allHope;
+var alldataarr,allHopearr;
+$(document).ready(function(){
+	htmlobj = $.ajax({url:"./data/member.txt",async:false});
+	alldata = htmlobj.responseText;
+	var alldataarr = alldata.split(",");
+	console.log(alldata);
+});
 //抽奖数据，以英文逗号分隔  
-var alldata = "蔡珂丹,蔡丽芸,曾婷婷,曾稳,岑剑雯,陈虹,陈嘉雯,陈俊福,陈子豪,杜姝姝,杜素娟,高喆,郭诗琪,黄丽阳,胡骏,霍文裕,胡泉,梁润记,梁智华,李浩锐,李家辉,李可葳,刘可迪,刘琴,罗梦竹,罗志雄,毛国导,孟祥存,潘斯妍,容安安,施维,谭锦祺,王琨,王律可,王申,王涛,万国彬,王鑫,王彦,吴毅,肖俊,肖月瑶,谢晓静,叶蕾,张浩松,张锦明,张军,詹力榛,郑嘉颖,周力钊,周艳辉,何文震,陈鹏,贾宇宁,陈冬文,卓加顺,王米梓,陈国鸿,严文敬,杨晓雯,潘耀";
+/*var alldata = "蔡珂丹,蔡丽芸,曾婷婷,曾稳,岑剑雯,陈虹,陈嘉雯,陈俊福,陈子豪,杜姝姝,杜素娟,高喆,郭诗琪,黄丽阳,胡骏,霍文裕,胡泉,梁润记,梁智华,李浩锐,李家辉,李可葳,刘可迪,刘琴,罗梦竹,罗志雄,毛国导,孟祥存,潘斯妍,容安安,施维,谭锦祺,王琨,王律可,王申,王涛,万国彬,王鑫,王彦,吴毅,肖俊,肖月瑶,谢晓静,叶蕾,张浩松,张锦明,张军,詹力榛,郑嘉颖,周力钊,周艳辉,何文震,陈鹏,贾宇宁,陈冬文,卓加顺,王米梓,陈国鸿,严文敬,杨晓雯,潘耀";*/
 //愿望数据，用英文分号分隔
-var allHope = 
+allHope = 
 "给我发一个红包;买一个爱心早餐;说出我的五个优点;请我喝下午茶;帮我借一个会议室";
-var alldataarr = alldata.split(",");
-var allHopearr = allHope.split(";");
+allHopearr = allHope.split(";");
 var num = alldataarr.length;  
 var timer;  
 var status=0;//0:未抽人; 1:抽人过程; 2:已抽人未开箱; 3:开箱过程; 4:终态；
