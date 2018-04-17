@@ -88,7 +88,7 @@ function ok(){
 	}
 	$("#stop").attr("class","weui-btn weui-btn_disable weui-btn_default");
 	$("#start").attr("class","weui-btn weui-btn_disable weui-btn_default");
-	$("#chest").attr("src","./pic/1.png");
+	showChest(2);
 	$("#chest").addClass("anim_stress_image");
 	var result=document.getElementById("result").innerHTML;
     clearInterval(timer);
@@ -115,18 +115,18 @@ function openChest(){
 	status = 3;
 	count = 0;
 	$("#chest").removeClass("anim_stress_image");
-	timer = setInterval("OpenChestAnimation()",1000);
+	timer = setInterval("OpenChestAnimation()",500);
 }
 
 function OpenChestAnimation(){
 	if (count==0) {
-        $("#chest").attr("src","./pic/2.png");
+        showChest(3);
     }
     if (count==1) {
-        $("#chest").attr("src","./pic/3.png");
+        showChest(4);
     }
     if (count==2) {
-        $("#chest").attr("src","./pic/4.png");
+        showChest(5);
     }
 	if(count > 2){
 		clearInterval(timer);
@@ -135,11 +135,20 @@ function OpenChestAnimation(){
 	count=count+1;
 }
 
+function showChest(ChestId){
+	$("#chest img:nth-of-type(1)").addClass("hide");
+	$("#chest img:nth-of-type(2)").addClass("hide");
+	$("#chest img:nth-of-type(3)").addClass("hide");
+	$("#chest img:nth-of-type(4)").addClass("hide");
+	$("#chest img:nth-of-type(5)").addClass("hide");
+	$("#chest img:nth-of-type("+ChestId+")").removeClass("hide");
+}
+
 function initial(){
 	if(status != 4) return;
 	status = 0;
 	$("#start").attr("class","weui-btn weui-btn_primary");
-	$("#chest").attr("src","./pic/5.png");
+	showChest(1);
 	$("#result_hope_box").addClass("hide");
 	document.getElementById("result").innerHTML = "点击开始";
 }
@@ -179,7 +188,14 @@ function GetRnd(min,max){
 	</div>
 	<div class = "chest">
 		<div class="result_hope_box hide" id="result_hope_box" style="position:absolute" onclick="initial()">买一个爱心早餐</div>
-		<a onclick="openChest()"><img id = "chest" src="./pic/5.png"/></a>
+		<a onclick="openChest()" id = "chest">
+			<img src="./pic/5.png">
+			<img class="hide" src="./pic/1.png">
+			<img class="hide" src="./pic/2.png">
+			<img class="hide" src="./pic/3.png">
+			<img class="hide" src="./pic/4.png">
+		</a>
+		
 	</div>
 	
 </body>     
