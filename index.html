@@ -59,7 +59,16 @@
 <script type="text/javascript">  
 var alldata,allHope;
 var alldataarr,allHopearr;
-var num;
+
+Array.prototype.remove = function(val) {
+	for(var i=0; i< this.length; i++) {
+    if(this[i] == val) {
+      this.splice(i,1);
+      break;
+    }
+  }
+};
+
 $(document).ready(function(){
 	htmlobj = $.ajax({url:"./data/member.txt",async:false});
 	alldata = htmlobj.responseText;
@@ -76,7 +85,7 @@ var status=0;//0:未抽人; 1:抽人过程; 2:已抽人未开箱; 3:开箱过程
 var count = 0;//开箱动画计数器
 function change(){     
     document.getElementById("result").innerHTML = alldataarr[GetRnd(0,num-1)];
-}  
+}
 function start(){
 	if(status != 0){
 		return;
@@ -98,19 +107,7 @@ function ok(){
 	$("#chest").addClass("anim_stress_image");
 	var result=document.getElementById("result").innerHTML;
     clearInterval(timer);
-    //以下代码表示获得奖的，不能再获奖了。重置刷新页面即可。  
-    alldata = alldata.replace(document.getElementById("result").innerHTML,"").replace(",,",",");  
-    // 去掉前置，最末尾的,  
-    if (alldata.substr(0,1)==",")  
-    {  
-      alldata = alldata.substr(1,alldata.length);  
-    }  
-    if (alldata.substr(alldata.length-1,1)==",")  
-    {  
-      alldata = alldata.substring(0,alldata.length-1);  
-    }  
-    alldataarr = alldata.split(",");    
-    num = alldataarr.length;
+    alldataarr.remove(result);
 	status = 2;	
 }
 
@@ -164,17 +161,9 @@ function showHope(){
 		document.getElementById("result_hope_box").innerHTML = "已经没有愿望了";
 	}
 	else{
-		document.getElementById("result_hope_box").innerHTML = allHopearr[GetRnd(0,allHopearr.length-1)];
-		allHope= allHope.replace(document.getElementById("result_hope_box").innerHTML,"").replace(";;",";");  
-		if (allHope.substr(0,1)==";")  
-		{  
-		  allHope = allHope.substr(1,allHope.length);  
-		}  
-		if (allHope.substr(allHope.length-1,1)==";")
-		{  
-		  allHope = allHope.substring(0,allHope.length-1);  
-		}  
-		allHopearr = allHope.split(";");
+		i = GetRnd(0,allHopearr.length-1);
+		document.getElementById("result_hope_box").innerHTML = allHopearr[i];
+		allHopearr.remove(allHopearr[i]);
 	}
 	status = 4;
 	$("#result_hope_box").removeClass("hide");
@@ -201,7 +190,6 @@ function GetRnd(min,max){
 			<img class="hide" src="./pic/3.png">
 			<img class="hide" src="./pic/4.png">
 		</a>
-		
 	</div>
 	
 </body>     
