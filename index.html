@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">  
 <html>  
 <head>
-	<title>为所欲为</title>
+	<title>抽奖活动</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -10,7 +10,6 @@
 
 	<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
 	<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css">
-	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 
 	<style>
 		.demos-content-padded{
@@ -23,173 +22,50 @@
 			font-weight: 400;
 			margin: 50px 15%;
 		}
-		.result_hope_box{
-			text-align: center;
-			font-size: 26px;
-			font-weight: 400;
-			border-radius: 15px 15px;
-			margin: 100px 10%;
-			padding: 15px 0px;
-			width:80%;
-			background-color:#1aad19;
-			color:white;
-		}
-		.chest{
-			text-align:center;
-		}
-		.hide{
-			display:none;
-		}
-		@-webkit-keyframes Stress {
-			0% {
-				opacity:1;
-			 }
-			50% {
-				opacity: 0.5;    
-			}
-		}
-		.anim_stress_image {   
-			-webkit-animation-name: Stress;
-			-webkit-animation-timing-function: ease-in-out;
-			-webkit-animation-iteration-count: infinite;
-			-webkit-animation-duration: 1s;
-			-webkit-animation-direction: normal;
-		}
 	</style>
+</head> 
 <script type="text/javascript">  
-var alldata,allHope;
-var alldataarr,allHopearr;
-
-Array.prototype.remove = function(val) {
-	for(var i=0; i< this.length; i++) {
-    if(this[i] == val) {
-      this.splice(i,1);
-      break;
-    }
-  }
-};
-
-$(document).ready(function(){
-	htmlobj = $.ajax({url:"./data/member.txt",async:false});
-	alldata = htmlobj.responseText;
-	alldataarr = alldata.split(",");
-	console.log(alldataarr);
-	htmlobj = $.ajax({url:"./data/hope.txt",async:false});
-	allHope = htmlobj.responseText;
-	allHopearr = allHope.split(";"); 
-	console.log(allHopearr);
-});
+//抽奖数据，以英文逗号分隔  
+var alldata = "蔡珂丹,蔡丽芸,曾婷婷,曾稳,岑剑雯,陈国鸿,陈虹,陈嘉雯,陈俊福,陈子豪,杜姝姝,杜素娟,高喆,郭诗琪,黄丽阳,胡俊,霍文裕,胡泉,梁润记,梁智华,李浩锐,李家辉,李可葳,刘可迪,刘琴,罗梦竹,罗志雄,毛国导,孟祥存,潘斯妍,潘耀,容安安,施维,谭锦祺,王琨,王律可,王申,王涛,万国彬,王鑫,王彦,吴毅,肖俊,肖月瑶,谢晓静,杨晓雯,严文敬,叶蕾,张浩松,张锦明,张军,詹力榛,郑嘉颖,周力钊,周艳辉,何文震,陈鹏,贾宇宁";    
+var alldataarr = alldata.split(",");    
+var num = alldataarr.length-1;  
 var timer;  
-var status=0;//0:未抽人; 1:抽人过程; 2:已抽人未开箱; 3:开箱过程; 4:终态；
-var count = 0;//开箱动画计数器
 function change(){     
-    document.getElementById("result").innerHTML = alldataarr[GetRnd(0,alldataarr.length-1)];
-}
-function start(){
-	if(status != 0){
-		return;
-	}
-	status = 1;
-	$("#start").attr("class","weui-btn weui-btn_disable weui-btn_default");
-	$("#stop").attr("class","weui-btn weui-btn_warn");
-	
-    clearInterval(timer);     
-    timer = setInterval('change()',46);
+    document.getElementById("result").innerHTML = alldataarr[GetRnd(0,num)];     
 }  
-function ok(){
-	if(status != 1){
-		return;
-	}
-	$("#stop").attr("class","weui-btn weui-btn_disable weui-btn_default");
-	$("#start").attr("class","weui-btn weui-btn_disable weui-btn_default");
-	showChest(2);
-	$("#chest").addClass("anim_stress_image");
-	var result=document.getElementById("result").innerHTML;
-    clearInterval(timer);
-    alldataarr.remove(result);
-	status = 2;	
-}
-
-function openChest(){
-	if(status != 2){
-		return;
-	}
-	status = 3;
-	count = 0;
-	$("#chest").removeClass("anim_stress_image");
-	timer = setInterval("OpenChestAnimation()",80);
-}
-
-function OpenChestAnimation(){
-	if (count==0) {
-        showChest(3);
-    }
-    if (count==1) {
-        showChest(4);
-    }
-    if (count==2) {
-        showChest(5);
-    }
-	if(count > 2){
-		clearInterval(timer);
-		showHope();
-	}
-	count=count+1;
-}
-
-function showChest(ChestId){
-	$("#chest img:nth-of-type(1)").addClass("hide");
-	$("#chest img:nth-of-type(2)").addClass("hide");
-	$("#chest img:nth-of-type(3)").addClass("hide");
-	$("#chest img:nth-of-type(4)").addClass("hide");
-	$("#chest img:nth-of-type(5)").addClass("hide");
-	$("#chest img:nth-of-type("+ChestId+")").removeClass("hide");
-}
-
-function initial(){
-	if(status != 4) return;
-	status = 0;
-	$("#start").attr("class","weui-btn weui-btn_primary");
-	showChest(1);
-	$("#result_hope_box").addClass("hide");
-	document.getElementById("result").innerHTML = "点击开始";
-}
-
-function showHope(){
-	if(allHopearr.length <= 1){
-		document.getElementById("result_hope_box").innerHTML = "已经没有愿望了";
-	}
-	else{
-		i = GetRnd(0,allHopearr.length-1);
-		document.getElementById("result_hope_box").innerHTML = allHopearr[i];
-		allHopearr.remove(allHopearr[i]);
-	}
-	status = 4;
-	$("#result_hope_box").removeClass("hide");
-}
-
-function GetRnd(min,max){
-	var out = Math.random()*(max-min);
-    return parseInt(out);     
+function start(){    
+	document.getElementById("start").className = "weui-btn weui-btn_disable weui-btn_default";
+	document.getElementById("stop").className = "weui-btn weui-btn_warn";
+    clearInterval(timer);     
+    timer = setInterval('change()',46); //随机数据变换速度，越小变换的越快     
+}  
+function ok(){     
+	document.getElementById("stop").className = "weui-btn weui-btn_disable weui-btn_default";
+	document.getElementById("start").className = "weui-btn weui-btn_primary";
+    clearInterval(timer);     
+    //以下代码表示获得奖的，不能再获奖了。  重置刷新页面即可。  
+    alldata = alldata.replace(document.getElementById("result").innerHTML,"").replace(",,",",");  
+    // 去掉前置，最末尾的,  
+    if (alldata.substr(0,1)==",")  
+    {  
+      alldata = alldata.substr(1,alldata.length);  
+    }  
+    if (alldata.substr(alldata.length-1,1)==",")  
+    {  
+      alldata = alldata.substring(0,alldata.length-1);  
+    }  
+    alldataarr = alldata.split(",");    
+    num = alldataarr.length-1;    
+}     
+function GetRnd(min,max){     
+    return parseInt(Math.random()*(max-min+1));     
 }  
 </script>  
-</head>
 <body> 
 	<div class = "demos-content-padded">
 		<div class="result_box" id="result">点击开始</div> 
-		<a class="weui-btn weui-btn_primary" onclick="start()" id="start">开始</a>
-		<a class="weui-btn weui-btn_disable weui-btn_default" onclick="ok()" id="stop">停止</a>
+		<a href="javascript:;" class="weui-btn weui-btn_primary" onclick="start()" id="start">开始</a>
+		<a href="javascript:;" class="weui-btn weui-btn_disable weui-btn_default" onclick="ok()" id="stop">停止</a>
 	</div>
-	<div class = "chest">
-		<div class="result_hope_box hide" id="result_hope_box" style="position:absolute" onclick="initial()">愿望</div>
-		<a onclick="openChest()" id = "chest">
-			<img src="./pic/5.png">
-			<img class="hide" src="./pic/1.png">
-			<img class="hide" src="./pic/2.png">
-			<img class="hide" src="./pic/3.png">
-			<img class="hide" src="./pic/4.png">
-		</a>
-	</div>
-	
 </body>     
 </html>  
