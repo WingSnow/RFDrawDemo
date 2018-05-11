@@ -73,7 +73,6 @@ $(document).ready(function(){
 	htmlobj = $.ajax({url:"./data/member.txt",async:false});
 	alldata = htmlobj.responseText;
 	alldataarr = alldata.split(",");
-	num = alldataarr.length;
 	console.log(alldataarr);
 	htmlobj = $.ajax({url:"./data/hope.txt",async:false});
 	allHope = htmlobj.responseText;
@@ -84,7 +83,7 @@ var timer;
 var status=0;//0:未抽人; 1:抽人过程; 2:已抽人未开箱; 3:开箱过程; 4:终态；
 var count = 0;//开箱动画计数器
 function change(){     
-    document.getElementById("result").innerHTML = alldataarr[GetRnd(0,num-1)];
+    document.getElementById("result").innerHTML = alldataarr[GetRnd(0,alldataarr.length-1)];
 }
 function start(){
 	if(status != 0){
