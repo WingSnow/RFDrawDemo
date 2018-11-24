@@ -1,0 +1,60 @@
+
+
+.demos-content-padded{
+    padding:15px;
+    background-image: url(../src/timg.jpg);
+    background-size: cover;
+
+    width: 1080px;
+    height:720px;
+    margin:auto;
+}
+.result_box{
+    text-align: center;
+    font-size: 34px;
+    line-height:50px;
+    color: #3cc51f;
+    font-weight: 400;
+    display: block;
+}
+.result_box  li{
+    height:50px;
+}
+#result{
+    height:250px;
+    width: 500px;
+    margin:125px auto 75px auto;
+    position: relative;
+    overflow: hidden;
+    background-color: lightgoldenrodyellow;
+    border-radius: 10px;
+    box-shadow:0 15px 15px -15px #000,
+    0 -15px 15px -15px #000;
+}
+ul {
+    padding:0;
+}
+#chosen_box {
+    border: red;
+    width:200px;
+    height: 50px;
+    position: absolute;
+    top:240px;
+    left:50%;
+    margin-left: -100px;
+    border-radius:10px;
+    box-shadow:inset 0 0 10px 1px red;
+}
+
+#okbutton{
+    display: block;
+    height:200px;
+    width:200px;
+    line-height:200px;
+    border-radius: 50%;
+    border: 10px solid lightgray;
+}
+
+body{
+    background-color: #ea586b;
+}
