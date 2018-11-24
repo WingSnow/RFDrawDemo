@@ -1,71 +1,178 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">  
-<html>  
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
-	<title>抽奖活动</title>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>抽奖活动</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-	<meta name="description" content="">
+    <meta name="description" content="">
 
-	<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
-	<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.2/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.0/css/jquery-weui.css">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 
-	<style>
-		.demos-content-padded{
-			padding:15px;
-		}
-		.result_box{
-			text-align: center;
-			font-size: 34px;
-			color: #3cc51f;
-			font-weight: 400;
-			margin: 50px 15%;
-		}
-	</style>
-</head> 
-<script type="text/javascript">  
-//抽奖数据，以英文逗号分隔  
-var alldata = "马剑,岑剑雯,王律可,温力圳,孟祥存,曾婷婷,施维,罗志雄,蔡丽芸,张浩松,万国彬,Vicki,王涛,蔡珂丹,罗梦竹,杨晓雯,陈鹏,王鑫,梁智华,邵妍,肖俊,卓加顺,胡骏,刘可迪,李浩锐,吴毅,谭锦祺,毛国导,潘斯妍,陈俊福,Ck,陈国鸿,叶鹏程,陈嘉雯,杜姝姝,张锦明,刘琴,刘静怡,王婧,霍文裕,周艳辉,贾宇宁,李可葳,谢晓静,刘清淮,黄雅君,胡泉,周力钊,容安安,梁润记,陈冬文,尹相顺,Simon,黄丽阳,杨玲,杜素娟,王申,高喆,詹力榛,张军";    
-var alldataarr = alldata.split(",");    
-var num = alldataarr.length-1;  
-var timer;  
-function change(){     
-    document.getElementById("result").innerHTML = alldataarr[GetRnd(0,num)];     
-}  
-function start(){    
-	document.getElementById("start").className = "weui-btn weui-btn_disable weui-btn_default";
-	document.getElementById("stop").className = "weui-btn weui-btn_warn";
-    clearInterval(timer);     
-    timer = setInterval('change()',46); //随机数据变换速度，越小变换的越快     
-}  
-function ok(){     
-	document.getElementById("stop").className = "weui-btn weui-btn_disable weui-btn_default";
-	document.getElementById("start").className = "weui-btn weui-btn_primary";
-    clearInterval(timer);     
-    //以下代码表示获得奖的，不能再获奖了。  重置刷新页面即可。  
-    alldata = alldata.replace(document.getElementById("result").innerHTML,"").replace(",,",",");  
-    // 去掉前置，最末尾的,  
-    if (alldata.substr(0,1)==",")  
-    {  
-      alldata = alldata.substr(1,alldata.length);  
-    }  
-    if (alldata.substr(alldata.length-1,1)==",")  
-    {  
-      alldata = alldata.substring(0,alldata.length-1);  
-    }  
-    alldataarr = alldata.split(",");    
-    num = alldataarr.length-1;    
-}     
-function GetRnd(min,max){     
-    return parseInt(Math.random()*(max-min+1));     
-}  
-</script>  
-<body> 
-	<div class = "demos-content-padded">
-		<div class="result_box" id="result">点击开始</div> 
-		<a href="javascript:;" class="weui-btn weui-btn_primary" onclick="start()" id="start">开始</a>
-		<a href="javascript:;" class="weui-btn weui-btn_disable weui-btn_default" onclick="ok()" id="stop">停止</a>
-	</div>
-</body>     
-</html>  
+    <style>
+
+        .demos-content-padded{
+            padding:15px;
+        }
+        .result_box{
+            text-align: center;
+            font-size: 34px;
+            line-height: 50px;
+            color: #3cc51f;
+            font-weight: 400;
+            margin: 50px 15%;
+        }
+        #result{
+            height:150px;
+            overflow: hidden;
+        }
+        ul {
+            overflow: hidden;
+            padding:0;
+        }
+        #chosen_box {
+            border: red solid 3px;
+            width:200px;
+            height: 50px;
+            position: absolute;
+            top:115px;
+            left:50%;
+            margin-left: -100px;
+        }
+    </style>
+</head>
+
+<body>
+<div class = "demos-content-padded" style="position: relative">
+    <div id="chosen_box"></div>
+    <div class="result_box" id="result">
+        <ul id="result_con">
+            <li></li>
+            <li>点击开始</li>
+            <li></li>
+        </ul>
+        <ul id="result_con2"></ul>
+    </div>
+    <a href="javascript:;" class="weui-btn weui-btn_primary" onclick="start()" id="start">开始</a>
+    <a href="javascript:;" class="weui-btn weui-btn_disable weui-btn_default" onclick="ok()" id="stop">停止</a>
+
+</div>
+</body>
+<script type="text/javascript">
+    //抽奖数据，以英文逗号分隔
+
+
+    var result_box = document.getElementById("result");
+    var result_con_box = document.getElementById("result_con");
+    var result_con2_box = document.getElementById("result_con2");
+
+    var timer;
+    var status = 0; // 0 开始可用，1停止可用，-1全不可用
+    var speed = 1;
+    var slowCount = 0;
+    var trapFlag = 0;
+
+    var alldata;
+    var alldataarr;
+
+    $(document).ready(function(){
+        htmlobj = $.ajax({url:"./data/member.txt",async:false});
+        alldata = htmlobj.responseText;
+        alldataarr = alldata.split(",");
+        num = alldataarr.length;
+        console.log(alldataarr);
+    });
+
+    function initResultBox(){
+        result_con_box.innerHTML = null;
+        alldataarr.forEach(function(val){
+            const tmp = document.createElement("li");
+            tmp.innerText = val;
+            result_con_box.appendChild(tmp);
+        });
+
+        result_con2_box.innerHTML = result_con_box.innerHTML;
+    }
+
+    function start(){
+        if(status != 0) return;
+        status = 1;
+        trapFlag = 0;
+        document.getElementById("start").className = "weui-btn weui-btn_disable weui-btn_default";
+        document.getElementById("stop").className = "weui-btn weui-btn_warn";
+        alldataarr = shuffle(alldataarr);
+        clearInterval(timer);
+        initResultBox();
+        speed = 1;
+        timer = setInterval("ScrollUp()",speed);
+    }
+
+    function getChosenOne(){
+        if(result_box.scrollTop % 50 != 0){
+            result_box.scrollTop = Math.round(result_box.scrollTop / 50) * 50;
+        }
+
+        //以下代码表示获得奖的，不能再获奖了。  重置刷新页面即可。
+        alldataarr.splice((parseInt(result_box.scrollTop / 50)+1)%alldataarr.length,1);
+        num = alldataarr.length-1;
+
+        status = 0;
+        document.getElementById("start").className = "weui-btn weui-btn_primary";
+    }
+
+    function ScrollUpSlow(){
+        ScrollUp();
+        slowCount++;
+        if(slowCount * speed >= 1000){
+            clearInterval(timer);
+            if(speed < 30){
+                speed = speed * 4;
+                slowCount = 0;
+                timer = setInterval("ScrollUpSlow()",speed);
+            }
+            else{
+                if(trapFlag == 0 && Math.random() < 0.3){
+                    speed = speed / 4;
+                    slowCount = 0;
+                    trapFlag = 1;
+                    timer = setInterval("ScrollUpSlow()",speed);
+                }else{
+                    getChosenOne();
+                }
+            }
+        }
+    }
+
+    function ok(){
+        if(status != 1) return;
+        status = -1;
+        document.getElementById("stop").className = "weui-btn weui-btn_disable weui-btn_default";
+
+        clearInterval(timer);
+        speed = 2;
+        slowCount = 0;
+        timer = setInterval("ScrollUpSlow()",speed);
+    }
+
+    function shuffle(arr){
+        var len = arr.length;
+        for(var i = 0; i < len - 1; i++){
+            var idx = Math.floor(Math.random() * (len - i));
+            var temp = arr[idx];
+            arr[idx] = arr[len - i - 1];
+            arr[len - i -1] = temp;
+        }
+        return arr;
+    }
+    function ScrollUp(){
+        if( result_box.scrollTop>= result_con_box.scrollHeight){
+            result_box.scrollTop=0;
+        }else{
+            result_box.scrollTop+=3;
+        }
+    }
+</script>
+</html>
