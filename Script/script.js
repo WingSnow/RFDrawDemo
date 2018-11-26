@@ -7,6 +7,7 @@ var status; // 0 开始可用，1停止可用，-1全不可用
 var speed = 1;
 var slowCount = 0;
 var trapFlag = 0;
+var slideTime = 1000;
 
 var alldata;
 var alldataarr;
@@ -40,6 +41,7 @@ function start(){
     if(status != 0) return;
     status = 1;
     trapFlag = 0;
+    slideTime = 1000;
     document.getElementById("okbutton").className = "weui-btn weui-btn_warn weui-btn_default";
     alldataarr = shuffle(alldataarr);
     clearInterval(timer);
@@ -49,9 +51,7 @@ function start(){
 }
 
 function getChosenOne(){
-
     if(result_box.scrollTop % 50 != 0){
-        let tmp = 1450;
         result_box.scrollTop = Math.round(result_box.scrollTop / 50) * 50;
     }
 
@@ -64,10 +64,17 @@ function getChosenOne(){
     document.getElementById("okbutton").className = "weui-btn weui-btn_primary";
 }
 
+function trap(){
+    slowCount = 0;
+    trapFlag = 1;
+    slideTime = 3000;
+    timer = setInterval("ScrollUpSlow()",speed);
+}
+
 function ScrollUpSlow(){
     ScrollUp();
     slowCount++;
-    if(slowCount * speed >= 1000){
+    if(slowCount * speed >= slideTime){
         clearInterval(timer);
         if(speed < 30){
             speed = speed * 4;
@@ -76,10 +83,7 @@ function ScrollUpSlow(){
         }
         else{
             if(trapFlag == 0 && Math.random() < 0.3){
-                speed = speed / 4;
-                slowCount = 0;
-                trapFlag = 1;
-                timer = setInterval("ScrollUpSlow()",speed);
+                setTimeout(trap,1000);
             }else{
                 getChosenOne();
             }
