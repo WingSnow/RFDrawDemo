@@ -91,6 +91,7 @@ function trap(){
 function ScrollUpSlow(){
     ScrollUp();
     slowCount++;
+    console.log("scrollupSlow");
     if(slowCount * speed >= slideTime){
         clearInterval(timer);
         if(speed < 30){
@@ -100,11 +101,13 @@ function ScrollUpSlow(){
         }
         else{
             if(trapFlag == 0 && Math.random() < 0.3){
+                console.log("2");
                 timer = setInterval(_slideToCorrect(function(){
                     setTimeout(trap,800);
                 }),speed);
             }else{
                 if(result_box.scrollTop % 50 != 0){
+                    console.log("1");
                     timer = setInterval(_slideToCorrect(getChosenOne),speed);
                 }else {
                     getChosenOne();
