@@ -12,6 +12,9 @@ var slideTime = 1000;
 var alldata;
 var alldataarr;
 
+
+
+
 $(document).ready(function(){
     status = 0;
     result_box = document.getElementById("result");
@@ -37,7 +40,6 @@ function initResultBox(){
 }
 
 function start(){
-    console.log('start');
     if(status != 0) return;
     status = 1;
     trapFlag = 0;
@@ -47,14 +49,29 @@ function start(){
     clearInterval(timer);
     initResultBox();
     speed = 1;
-    timer = setInterval("ScrollUp()",speed);
+    timer = setInterval(ScrollUp,speed);
 }
 
-function getChosenOne(){
-    if(result_box.scrollTop % 50 != 0){
-        result_box.scrollTop = Math.round(result_box.scrollTop / 50) * 50;
+function _slideToCorrect(args){
+    return function(){
+        slideToCorrect(args);
     }
+}
 
+function slideToCorrect(args){
+    if( result_box.scrollTop>= result_con_box.scrollHeight){
+        result_box.scrollTop=0;
+    }else{
+        result_box.scrollTop+=1;
+    }
+    if(Math.round(result_box.scrollTop) % 50 == 0){
+        clearInterval(timer);
+        args();
+    }
+}
+
+
+function getChosenOne(){
     console.log(alldataarr[(Math.round(result_box.scrollTop / 50)+2)%alldataarr.length]);
     //以下代码表示获得奖的，不能再获奖了。  重置刷新页面即可。
     alldataarr.splice((parseInt(result_box.scrollTop / 50)+2)%alldataarr.length,1);
@@ -67,8 +84,8 @@ function getChosenOne(){
 function trap(){
     slowCount = 0;
     trapFlag = 1;
-    slideTime = 3000;
-    timer = setInterval("ScrollUpSlow()",speed);
+    slideTime = 1000;
+    timer = setInterval(ScrollUpSlow,64);
 }
 
 function ScrollUpSlow(){
@@ -79,13 +96,19 @@ function ScrollUpSlow(){
         if(speed < 30){
             speed = speed * 4;
             slowCount = 0;
-            timer = setInterval("ScrollUpSlow()",speed);
+            timer = setInterval(ScrollUpSlow,speed);
         }
         else{
             if(trapFlag == 0 && Math.random() < 0.3){
-                setTimeout(trap,1000);
+                timer = setInterval(_slideToCorrect(function(){
+                    setTimeout(trap,800);
+                }),speed);
             }else{
-                getChosenOne();
+                if(result_box.scrollTop % 50 != 0){
+                    timer = setInterval(_slideToCorrect(getChosenOne),speed);
+                }else {
+                    getChosenOne();
+                }
             }
         }
     }
@@ -97,7 +120,6 @@ function startOrStop(){
 }
 
 function stop(){
-    console.log('stop');
     if(status != 1) return;
     status = -1;
     document.getElementById("okbutton").className = "weui-btn weui-btn_disable weui-btn_default";
@@ -105,7 +127,7 @@ function stop(){
     clearInterval(timer);
     speed = 8;
     slowCount = 0;
-    timer = setInterval("ScrollUpSlow()",speed);
+    timer = setInterval(ScrollUpSlow,speed);
 }
 
 function shuffle(arr){
