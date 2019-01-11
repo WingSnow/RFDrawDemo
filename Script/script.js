@@ -11,8 +11,16 @@ var slideTime = 1000;
 
 var alldata;
 var alldataarr;
+var window_H=window.innerHeight;
+var remJS=0.03*window_H;
 
 
+window.onresize=function(){
+	var sizeC = window.innerHeight/window_H;
+	window_H = window.innerHeight;
+	remJS=0.03*window_H;
+	result_box.scrollTop *= sizeC;
+}
 
 
 $(document).ready(function(){
@@ -52,19 +60,20 @@ function start(){
     timer = setInterval(ScrollUp,speed);
 }
 
-function _slideToCorrect(args){
+function _slideToCorrect(args,val){
     return function(){
-        slideToCorrect(args);
+        slideToCorrect(args,val);
     }
 }
 
-function slideToCorrect(args){
+function slideToCorrect(args,val){
     if( result_box.scrollTop>= result_con_box.scrollHeight){
         result_box.scrollTop=0;
     }else{
-        result_box.scrollTop+=1;
+        result_box.scrollTop+=0.25*remJS;
     }
-    if(Math.round(result_box.scrollTop) % 50 == 0){
+
+    if(result_box.scrollTop = val){
         clearInterval(timer);
         args();
     }
@@ -72,9 +81,14 @@ function slideToCorrect(args){
 
 
 function getChosenOne(){
-    console.log(alldataarr[(Math.round(result_box.scrollTop / 50)+2)%alldataarr.length]);
+	if(trapFlag == 0 && Math.random() < 0.1){
+		setTimeout(trap,800);
+		return;
+	}
+	var tempIndex = (Math.round(result_box.scrollTop / (remJS*2.5))+4)%alldataarr.length;
+    console.log(alldataarr[tempIndex]);
     //以下代码表示获得奖的，不能再获奖了。  重置刷新页面即可。
-    alldataarr.splice((parseInt(result_box.scrollTop / 50)+2)%alldataarr.length,1);
+    alldataarr.splice(tempIndex,1);
     num = alldataarr.length-1;
 
     status = 0;
@@ -99,17 +113,7 @@ function ScrollUpSlow(){
             timer = setInterval(ScrollUpSlow,speed);
         }
         else{
-            if(trapFlag == 0 && Math.random() < 0.3){
-                timer = setInterval(_slideToCorrect(function(){
-                    setTimeout(trap,800);
-                }),speed);
-            }else{
-                if(result_box.scrollTop % 50 != 0){
-                    timer = setInterval(_slideToCorrect(getChosenOne),speed);
-                }else {
-                    getChosenOne();
-                }
-            }
+            timer = setInterval(_slideToCorrect(getChosenOne,Math.round(result_box.scrollTop/(remJS*2.5))*(remJS*2.5)),speed);
         }
     }
 }
@@ -144,6 +148,6 @@ function ScrollUp(){
     if( result_box.scrollTop>= result_con_box.scrollHeight){
         result_box.scrollTop=0;
     }else{
-        result_box.scrollTop+=3;
+        result_box.scrollTop+=0.25*remJS;
     }
 }

@@ -1,29 +1,42 @@
+html{
+	font-size:3vh !important;
+}
 
+html,body{
+	height:100%;
+}
+
+body{
+	background-image: url(../src/timg.png);
+    background-size: cover;
+	background-repeat:no-repeat;
+}
 
 .demos-content-padded{
-    padding:15px;
-    background-image: url(../src/timg.jpg);
-    background-size: cover;
-
-    width: 1080px;
-    height:720px;
+	display:flex;
+	justify-content:space-around;
+	box-sizing:border-box;
+    width: 100%;
+    height:100%;
     margin:auto;
+	overflow:hidden;
 }
 .result_box{
     text-align: center;
-    font-size: 34px;
-    line-height:50px;
+    font-size: 2rem;
+    line-height:2.5rem;
+	letter-spacing:1rem;
     color: #3cc51f;
     font-weight: 400;
     display: block;
 }
 .result_box  li{
-    height:50px;
+    height:2.5rem;
 }
 #result{
-    height:250px;
-    width: 500px;
-    margin:125px auto 75px auto;
+    height:22.5rem;
+    width: 20rem;
+    margin-top:5.5rem;
     position: relative;
     overflow: hidden;
     background-color: lightgoldenrodyellow;
@@ -36,23 +49,25 @@ ul {
 }
 #chosen_box {
     border: red;
-    width:200px;
-    height: 50px;
+    width:15rem;
+    height: 3rem;;
     position: absolute;
-    top:240px;
+    top:15.5rem;
     left:50%;
-    margin-left: -100px;
+    margin-left: -7.5rem;
     border-radius:10px;
     box-shadow:inset 0 0 10px 1px red;
 }
 
 #okbutton{
     display: block;
-    height:200px;
-    width:200px;
-    line-height:200px;
+    height:10rem;
+    width:10rem;
+    line-height:10rem;
     border-radius: 50%;
+	margin-top:10rem;
     border: 10px solid lightgray;
+	margin-left:-10rem;
 }
 
 body{
